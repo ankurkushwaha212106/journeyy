@@ -1,32 +1,45 @@
 #include<iostream>
 using namespace std;
+
 int main()
 {
     int n;
-    cout<<"enter the size of array";
-    cin>>n;
+    cout << "Enter the size of array: ";
+    cin >> n;
+
     int arr[n];
-    cout<<"enter the element of array";
-    for(int i=0;i<n;i++)
+    cout << "Enter the sorted elements of array: ";
+    for(int i = 0; i < n; i++)
     {
-        cin>>arr[i];
+        cin >> arr[i];
     }
-    int target ; int data;
-    cout<<"enter the target value";
-    cin>>target;
-    int start =0;int end = n-1;
-    for(int i=0;i<n;i++)
+
+    int target;
+    cout << "Enter the target value: ";
+    cin >> target;
+
+    int start = 0, end = n - 1;
+    int ans = -1;  // store upper bound
+
+    while(start <= end)
     {
-        int mid = start + (end - start)/2;
-        if(arr[mid]>=target)
+        int mid = start + (end - start) / 2;
+
+        if(arr[mid] > target)
         {
-data = arr[mid];
-end = mid - 1;
+            ans = arr[mid];   // possible upper bound
+            end = mid - 1;    // search in left half
         }
         else
-        start = mid + 1;
-
+        {
+            start = mid + 1;  // search in right half
+        }
     }
-    cout<<"data"<< data <<endl;
+
+    if(ans == -1)
+        cout << "No upper bound found (target is >= all elements)";
+    else
+        cout << "Upper bound: " << ans;
+
     return 0;
 }
