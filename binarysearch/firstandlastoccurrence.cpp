@@ -1,56 +1,38 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-int firstOccurrence(int arr[], int n, int target)
+int searchInRotatedArray(int arr[], int n, int target)
 {
     int start = 0, end = n - 1;
-    int ans = -1;
 
-    while(start <= end)
+    while (start <= end)
     {
         int mid = start + (end - start) / 2;
 
-        if(arr[mid] == target)
+        if (arr[mid] == target)
+            return mid; // found
+
+        // Check if left half is sorted
+        if (arr[start] <= arr[mid])
         {
-            ans = mid;          // store answer
-            end = mid - 1;      // look on left side for first occurrence
+            // target lies in left half
+            if (target >= arr[start] && target < arr[mid])
+                end = mid - 1;
+            else
+                start = mid + 1;
         }
-        else if(arr[mid] < target)
-        {
-            start = mid + 1;
-        }
+        // otherwise right half is sorted
         else
         {
-            end = mid - 1;
+            // target lies in right half
+            if (target > arr[mid] && target <= arr[end])
+                start = mid + 1;
+            else
+                end = mid - 1;
         }
     }
-    return ans;
-}
 
-int lastOccurrence(int arr[], int n, int target)
-{
-    int start = 0, end = n - 1;
-    int ans = -1;
-
-    while(start <= end)
-    {
-        int mid = start + (end - start) / 2;
-
-        if(arr[mid] == target)
-        {
-            ans = mid;          // store answer
-            start = mid + 1;    // look on right side for last occurrence
-        }
-        else if(arr[mid] < target)
-        {
-            start = mid + 1;
-        }
-        else
-        {
-            end = mid - 1;
-        }
-    }
-    return ans;
+    return -1; // not found
 }
 
 int main()
@@ -60,8 +42,8 @@ int main()
     cin >> n;
 
     int arr[n];
-    cout << "Enter sorted elements of array: ";
-    for(int i = 0; i < n; i++)
+    cout << "Enter the rotated sorted array elements: ";
+    for (int i = 0; i < n; i++)
     {
         cin >> arr[i];
     }
@@ -70,16 +52,12 @@ int main()
     cout << "Enter the target value: ";
     cin >> target;
 
-    int first = firstOccurrence(arr, n, target);
-    int last = lastOccurrence(arr, n, target);
+    int index = searchInRotatedArray(arr, n, target);
 
-    if(first == -1)
+    if (index == -1)
         cout << "Element not found!";
     else
-    {
-        cout << "First occurrence at index: " << first << endl;
-        cout << "Last occurrence at index: " << last << endl;
-    }
+        cout << "Element found at index: " << index;
 
     return 0;
 }
